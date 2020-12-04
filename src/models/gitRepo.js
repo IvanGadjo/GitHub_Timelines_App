@@ -18,7 +18,8 @@ const GitRepoSchema = new Schema({
     createdAt: { type: Date, required: true },
     htmlUrl: { type: String, required: true },
     size: { type: Number, required: true },
-    notes: { type: [String], default: [] },
+    description: { type: String, required: false },
+    notes: { type: [String], default: [], required: false },
     commits: [CommitSchema]             // array of commits
 });
 

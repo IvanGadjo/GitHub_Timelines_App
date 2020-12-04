@@ -11,6 +11,14 @@ function router(message) {
 
     const { getAllProjects, createNewProject, getProjectById, deleteProject, editProject } = projectsController();
 
+    // Authentication middleware
+    projectsRouter.use((req, resp, next) => {
+        if (req.session.userToken)
+            next();
+        else
+            resp.redirect('/');
+    });
+
     projectsRouter.route('/').get(getAllProjects);
     projectsRouter.route('/createNewProject').post(createNewProject);
     projectsRouter.route('/:id').get(getProjectById);
