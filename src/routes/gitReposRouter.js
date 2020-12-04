@@ -21,13 +21,13 @@ function router() {
         getCommitsFromRepo,
     } = gitReposController(gitReposService);
 
-    // NOTE: Ova e nekoj middleware za auth (ako vo req postoi user pusti go, ako ne redirect)
-    // gitReposRouter.use((req, resp, next) => {
-    //     if (req.user)
-    //         next();
-    //     else
-    //         resp.redirect('/');
-    // });
+    // Authentication middleware
+    gitReposRouter.use((req, resp, next) => {
+        if (req.session.userToken)
+            next();
+        else
+            resp.redirect('/');
+    });
 
     // Only from model
     gitReposRouter.route('/addRepoToProjectSegment/:id').post(addGitRepoToProjectSegment);

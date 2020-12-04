@@ -8,7 +8,8 @@ const CommitSchema = new Schema({
     commitId: { type: String, required: true },
     author: { type: String, required: true },
     date: { type: Date, required: true },
-    url: { type: String, required: true }
+    url: { type: String, required: true },
+    commitMessage: { type: String, default: '', unique: false }
 });
 
 const GitRepoSchema = new Schema({

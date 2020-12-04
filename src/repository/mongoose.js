@@ -3,6 +3,7 @@ const debug = require('debug')('app:mongoose');
 
 const GitRepo = require('../models/gitRepo');
 const Project = require('../models/project');
+const User = require('../models/user');
 
 // connection
 
@@ -17,7 +18,7 @@ mongoose.connect('mongodb://localhost:27017/Github_Timelines_App_2_DB').then(() 
 // methods
 
 // -- Projects
-const createNewProject = async (req) => {
+const createNewProject = async (req) => {       // TODO: treba da stava creator = username od session zemeno
     
     const newProject = new Project({
         name: req.body.name,
@@ -85,6 +86,27 @@ const deleteProject = async (req) => {
     
 };
  
+// -- Users
+const createNewUser = async (gitUsername, gitUrl, gitAvatarUrl, projectIds, followingGitRepos) => {
+
+    const newUser = new User({
+        gitUsername,
+        gitUrl,
+        gitAvatarUrl,
+        projectIds,
+        followingGitRepos
+    });
+
+    try {
+        const result = await newUser.save();
+        return result;
+    } catch (error) {
+        debug(error);
+        return error;
+    }
+};
+
+
 // -- Git Repos
 const getRepoById = async (req) => {        // NOTE: Metodov ne raboti, bidejki sekoe repo se sejvnuva vo ramki na eden
                                             // projectSegment, a ne se pravi posebno collection za gitRepos
@@ -211,6 +233,8 @@ module.exports.getAllProjects = getAllProjects;
 module.exports.getProjectById = getProjectById;
 module.exports.deleteProject = deleteProject;
 module.exports.editProject = editProject;
+
+module.exports.createNewUser = createNewUser;
 
 module.exports.addRepoToProject = addRepoToProject;
 module.exports.getRepoById = getRepoById;

@@ -20,12 +20,6 @@ const serverUrl = process.env.SERVER_URL || 'localhost:3000';
 const port = process.env.PORT || 3000;
 const sessionSecret = process.env.SESSION_SECRET;
 
-// const baseRoutes = {
-//     HOME: '/home',
-//     EXPLORE: '/explore',
-//     'MY LOADOUT': '/myLoadout'
-// };
-
 
 const demoMsg = 'Poraka od app.js do projectsRouter';
 const gitReposRouter = require('./src/routes/gitReposRouter')();
@@ -52,8 +46,8 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist'))
 mongoose.connect('mongodb://localhost:27017/Github_Timelines_App_2_DB').then(() => {
     debug('Mogoose connection succesfull from APP.js'); 
 }).catch(() => {
-    debug('Mongoose connection failed from APP.js');
-});
+    debug('Mongoose connection failed from APP.js');    // NOTE: Ne moras da pravis nov connection, mozes da go import vekje postoeclkiot
+});                                                     // const mongooseConnection = require('../repository/mongoose');
 app.use(session({
     secret: sessionSecret,      // It holds the secret key for session 
     resave: true,               // Forces the session to be saved back to the session store 
@@ -81,7 +75,7 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', (req, resp) => {
-    resp.send('HOME PAGE');
+    resp.send('HOME PAGE, please log in to see this page');
 });
 
 
@@ -101,9 +95,10 @@ app.listen(port, () => {
 // *5. Hide global vars
 // *6. dodaj stvari na gitRepo model (notes, description ...)
 // *7. Probaj so token da dobies info za nekoi repos
-// 8. Model za user (following repos, projects, git acc)
-// 9. Kreiranje proekt preku user
-// *9.1 Zacuvuvanje na userot i tokenot nekako vo sesija
+// *8. Model za user (following repos, projects, git acc)
+// 9.1 Popravanje return values na site endpoints
+// 9.2 Kreiranje proekt preku user
+// *9.3 Zacuvuvanje na userot i tokenot nekako vo sesija
 // 10. Probaj da add vistinsko repo na proekt
 // 11. Da moze da follownes repos
 // 12. Za pageot myRepos - metod sto gi lista site repos od tvojot git acc

@@ -7,6 +7,7 @@ const ProjectSegment = require('./projectSegment');         // NOTE: Vaka pravis
 const { Schema } = mongoose;
 
 const ProjectSchema = new Schema({
+    creator: { type: String, required: true, unique: false },
     name: { type: String, required: true },
     status: {                                               // NOTE: Vaka se definira enum
         type: [{ type: String, enum: ['development', 'inactive', 'finished'] }],     

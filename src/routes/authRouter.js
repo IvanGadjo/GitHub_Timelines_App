@@ -1,7 +1,7 @@
 const express = require('express');
 const debug = require('debug')('app:authRouter');
 const axios = require('axios');
-// const session = require('express-session');
+const usersController = require('../controllers/usersController');
 require('dotenv').config();
 
 
@@ -15,13 +15,17 @@ const clientSecret = process.env.CLIENT_SECRET;
 
 function router() {    
 
+    const { createNewUser } = usersController();
+
+
+
     let token = null;
 
-    authRouter.route('/').get((req, resp) => {
+    authRouter.route('/').get((req, resp) => {      // NOTE: prv povik za da zeme code
         resp.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo`);
     });
 
-    authRouter.route('/github/callback').get((req, res) => {
+    authRouter.route('/github/callback').get((req, res) => {    // NOTE: Prethodniot povik zavrsuva na ovoj callback
         debug('POVIK 1');
         debug(req.query.code);
 
@@ -32,7 +36,7 @@ function router() {
         };
         const opts = { headers: { accept: 'application/json' } };
 
-        axios.post('https://github.com/login/oauth/access_token', body, opts)
+        axios.post('https://github.com/login/oauth/access_token', body, opts)   // NOTE: vtor povik so code, za da zeme token
             .then(resp => {
                 debug('POVIK 2.1');
                 debug(resp.data.access_token);
@@ -45,30 +49,45 @@ function router() {
 
                 req.session.userToken = token;
 
-                res.redirect('/projects');
+                // res.redirect('/projects');
 
 
-                // return token;
+                return token;
             })
-            // .then(tok => {               // NOTE: Vaka povici so tokenot
-                
+            .then(tok => {           // NOTE: Sega preku tokenot zema info za user i go kreira vo db ako ne postoi    
+                                    // NOTE: Vaka povici so tokenot
 
-            //     axios.get('https://api.github.com/user/repos', {
-            //         headers: {
-            //             authorization: `token ${tok}`
-            //         }
-            //     }).then(respo => {
-            //         debug(respo.data[0]);
-            //         debug(respo.data[1]);
+                axios.get('https://api.github.com/user', {
+                    headers: {
+                        authorization: `token ${tok}`
+                    }
+                })
+                .then(respo => {
 
-            //         res.json({ ok: 1 });
-            //     });
-            // })
+                    // const { createNewUser } = usersController;
+
+                    debug(respo.data.login);
+                    const gitUsername = respo.data.login;
+                    const gitUrl = respo.data.html_url;
+                    const gitAvatarUrl = respo.data.avatar_url;
+                    const projectIds = [];
+                    const followingGitRepos = [];
+
+                    req.session.userName = gitUsername;
+                    
+                    // povik na metod od userscontroler za new user
+                    const noviot = createNewUser(gitUsername, gitUrl, gitAvatarUrl, projectIds, followingGitRepos);
+
+                    res.redirect('/projects');
+                });
+            })
             .catch(err => {
                 res.status(500).json({ message: err.message });
             });
     });
 
+
+    // FIXME: zatvori go ovoj endpoint na kraj
     authRouter.route('/getUserToken').get((req, resp) => {
         resp.send(req.session.userToken);
     });
