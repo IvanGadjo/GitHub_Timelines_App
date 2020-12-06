@@ -25,6 +25,7 @@ const demoMsg = 'Poraka od app.js do projectsRouter';
 const gitReposRouter = require('./src/routes/gitReposRouter')();
 const projectsRouter = require('./src/routes/projectsRouter')(demoMsg);
 const authRouter = require('./src/routes/authRouter')();
+const usersRouter = require('./src/routes/usersRouter')();
 
 
 
@@ -61,6 +62,7 @@ app.use(session({
 app.use('/auth', authRouter);
 app.use('/gitRepos', gitReposRouter);
 app.use('/projects', projectsRouter);
+app.use('/users', usersRouter);
 
 
 

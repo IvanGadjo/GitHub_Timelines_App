@@ -14,11 +14,22 @@ function usersController() {
         }());
     }
 
-    function getUserById() {
+    function getUserById(req, resp) {
 
+        (async function getUserByIdFromMongo() {
+            const result = await mongooseConnection.getUserById(req);
+            resp.json(result);
+        }());
+    }   
+
+    function getProjectsOfLoggedInUser(req, resp) {
+        (async function getProjsOfUserFromMongo() {
+            const result = await mongooseConnection.getProjectsOfLoggedInUser();
+            resp.json(result);
+        }());
     }
 
-    return { createNewUser, getUserById };
+    return { createNewUser, getUserById, getProjectsOfLoggedInUser };
 }
 
 module.exports = usersController;
