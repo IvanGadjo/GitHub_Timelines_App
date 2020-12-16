@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const debug = require('debug')('app:mongoose');
 
-const GitRepo = require('../models/gitRepo');
+
 const Project = require('../models/project');
-const user = require('../models/user');
+
 const User = require('../models/user');
 
 // connection
@@ -17,11 +17,6 @@ mongoose.connect('mongodb://localhost:27017/Github_Timelines_App_2_DB').then(() 
 
 
 
-
-
-
-// TIE STO SE TESTIRANI VEKJE IMAAT *** NAD NIV 
-
 // TODO: SEGA ZA SEGA NE CUVAS I COMMITS ZA REPO, MOZEBI KE E PREGOLEMO ZA VO DB
 
 
@@ -31,7 +26,6 @@ mongoose.connect('mongodb://localhost:27017/Github_Timelines_App_2_DB').then(() 
 // methods
 
 // -- Projects
-
 // ***
 const createNewProject = async (req) => {  
     
@@ -190,22 +184,8 @@ const getUserById = async (req) => {
 };
 
 
-
 // -- Git Repos
-const getRepoById = async (req) => {        // NOTE: Metodov ne raboti, bidejki sekoe repo se sejvnuva vo ramki na eden
-                                            // projectSegment, a ne se pravi posebno collection za gitRepos
-    const { id } = req.params;
-
-    try {
-        const result = await GitRepo.findById(id).exec();
-        debug(result);
-        return result;
-    } catch (error) {
-        const msg = `Cannot find git repo with the id ${id}`;
-        return msg;
-    }
-};
-
+// ***
 const addRepoToProject = async (req) => {
     const { id } = req.params;      // project id
 
@@ -216,7 +196,10 @@ const addRepoToProject = async (req) => {
         owner: req.body.owner,
         numCommits: req.body.numCommits,
         createdAt: req.body.createdAt,
-        url: req.body.url,
+        htmlUrl: req.body.htmlUrl,
+        size: req.body.size,
+        description: req.body.description,
+        notes: req.body.notes,
         commits: req.body.commits 
     }; 
 
@@ -240,7 +223,7 @@ const addRepoToProject = async (req) => {
         return `Cannot add repo to the project with id ${id}`;
     }
 };
-
+// ***
 const removeRepoFromProject = async (req) => {
     const { gitRepoId } = req.params;
     const { projectId, segmentId } = req.body;
@@ -266,53 +249,57 @@ const removeRepoFromProject = async (req) => {
         return `Cannot remove repo from the project with id ${projectId}`;
     }
 };
+// ***
+const addNoteToRepo = async (req) => {
+    const { repoId } = req.params;
+    const { projectId, segmentId, note } = req.body;
 
-const addNoteToRepo = async (req) => {};
+    debug(projectId);
 
+    try {
+        const project = await Project.findById(projectId).exec();
+        const segment = project.segments.filter(s => s.id === segmentId)[0];
+        const gitRepo = segment.gitRepos.filter(r => r.id === repoId)[0];
+        gitRepo.notes.push(note);
 
+        const objectId = mongoose.Types.ObjectId(projectId);
 
+        const result = await Project.findByIdAndUpdate(objectId, project, { new: true }).exec();
+        return result;
+    } catch (error) {
+        debug(error);
+        return `Cannot add a note to the project with id ${projectId}, segment id ${segmentId}, repo id ${repoId}`;
+    }
+    
+};
+// ***
+const removeNoteFromRepo = async (req) => {
+    const { repoId } = req.params;
+    const { projectId, segmentId, noteToRemove } = req.body;
 
+    try {
+        const project = await Project.findById(projectId).exec();
+        const segment = project.segments.filter(s => s.id === segmentId)[0];
+        const gitRepo = segment.gitRepos.filter(r => r.id === repoId)[0];
 
+        const idx = gitRepo.notes.indexOf(noteToRemove);
+        gitRepo.notes.splice(idx, 1);
 
+        const objectId = mongoose.Types.ObjectId(projectId);
 
-
-// FIXME: Test
-const getAllGitRepos = async () => {
-    const result = await GitRepo.find().exec();     // exec() go pretvara rezultatot vo promise za da mozes da napravis async await
-    return result;
+        const result = await Project.findByIdAndUpdate(objectId, project, { new: true }).exec();
+        return result;
+    } catch (error) {
+        debug(error);
+        return `Cannot remove a note to the project with id ${projectId}, segment id ${segmentId}, repo id ${repoId}`;
+    }
 };
 
 
-// FIXME: Test
-const testNewRepo = async (req) => {
-
-    // console.log(req.body);
-    const newRepo = new GitRepo({
-        name: req.body.name,
-        owner: req.body.owner,
-        numCommits: req.body.numCommits,
-        createdAt: req.body.createdAt,
-        url: req.body.url,
-        // commits: req.body.commits
-        commits: []
-    });
-
-
-    // console.log(newRepo);
-
-    // newRepo.markModified('commits');
-
-    const result = await newRepo.save();
-    // res.json(result);
-    return result;
-};
 
 
 
 
-
-module.exports.getAllGitRepos = getAllGitRepos;
-module.exports.testNewRepo = testNewRepo;
 
 module.exports.createNewProject = createNewProject;
 module.exports.getAllProjects = getAllProjects;
@@ -325,5 +312,6 @@ module.exports.createNewUser = createNewUser;
 module.exports.getUserById = getUserById;
 
 module.exports.addRepoToProject = addRepoToProject;
-module.exports.getRepoById = getRepoById;
 module.exports.removeRepoFromProject = removeRepoFromProject;
+module.exports.addNoteToRepo = addNoteToRepo;
+module.exports.removeNoteFromRepo = removeNoteFromRepo;

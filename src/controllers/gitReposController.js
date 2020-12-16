@@ -34,6 +34,7 @@ function gitReposController(gitReposService) {
             resp.json(result);
         }());
     }
+
     function getUserRepos(req, resp) {
         const { username } = req.params;
         const { numPage } = req.body;
@@ -43,6 +44,7 @@ function gitReposController(gitReposService) {
             resp.json(result);
         }());
     }
+    
     function getCommitsFromRepo(req, resp) {
         const { username, gitRepoName } = req.params;
         (async function getCommitsFromRepoInGit() {
@@ -62,19 +64,28 @@ function gitReposController(gitReposService) {
         }());
     }
 
-    function getRepoById(req, resp) {
-        (async function getGitRepoFromMongo() {
-            const result = await mongooseConnection.getRepoById(req);
-            resp.json(result);
-        }());
-    }
-
     function removeRepoFromSegmet(req, resp) {
         (async function removeRepoFromSegmentFromMongo() {
             const result = await mongooseConnection.removeRepoFromProject(req);
             resp.json(result);
         }());
     }
+
+    function addNoteToRepo(req, resp) {
+        (async function addNoteInMongo() {
+            const result = await mongooseConnection.addNoteToRepo(req);
+            resp.json(result);
+        }());
+    }
+
+    function removeNoteFromRepo(req, resp) {
+        (async function removeNoteFromMongo() {
+            const result = await mongooseConnection.removeNoteFromRepo(req);
+            resp.json(result);
+        }());
+    }
+
+
 
     return { 
         searchGitRepos,
@@ -83,8 +94,9 @@ function gitReposController(gitReposService) {
         getUserRepos,
         getCommitsFromRepo,
         addGitRepoToProjectSegment, 
-        getRepoById,
-        removeRepoFromSegmet 
+        removeRepoFromSegmet,
+        addNoteToRepo,
+        removeNoteFromRepo
     };
 }
 

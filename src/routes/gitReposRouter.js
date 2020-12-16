@@ -12,27 +12,30 @@ const gitReposRouter = express.Router();
 function router() {
     const { 
         addGitRepoToProjectSegment,
-        getRepoById,
         removeRepoFromSegmet,
         searchGitRepos,
         getConcreteGitRepo,
         searchGitUsers,
         getUserRepos,
         getCommitsFromRepo,
+        addNoteToRepo,
+        removeNoteFromRepo
     } = gitReposController(gitReposService);
 
     // Authentication middleware
-    gitReposRouter.use((req, resp, next) => {
-        if (req.session.userToken)
-            next();
-        else
-            resp.redirect('/');
-    });
+    // gitReposRouter.use((req, resp, next) => {
+    //     if (req.session.userToken)
+    //         next();
+    //     else
+    //         resp.redirect('/');
+    // });
 
     // Only from model
     gitReposRouter.route('/addRepoToProjectSegment/:id').post(addGitRepoToProjectSegment);
-    gitReposRouter.route('/:id').get(getRepoById);
     gitReposRouter.route('/removeRepoFromProjectSegment/:gitRepoId').delete(removeRepoFromSegmet);
+    gitReposRouter.route('/addNote/:repoId').post(addNoteToRepo);
+    gitReposRouter.route('/removeNote/:repoId').delete(removeNoteFromRepo);
+    
 
     // with Github API
     gitReposRouter.route('/search/repos/:term').get(searchGitRepos);

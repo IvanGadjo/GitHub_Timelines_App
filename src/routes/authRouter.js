@@ -21,6 +21,7 @@ function router() {
 
     let token = null;
 
+    // login
     authRouter.route('/').get((req, resp) => {      // NOTE: prv povik za da zeme code
         resp.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo`);
     });

@@ -99,14 +99,13 @@ app.listen(port, () => {
 // *7. Probaj so token da dobies info za nekoi repos
 // *8. Model za user (following repos, projects, git acc)
 // 9.1 Popravanje return values na site endpoints
-// 9.2 Kreiranje proekt preku user
+// *9.2 Kreiranje proekt preku user
 // *9.3 Zacuvuvanje na userot i tokenot nekako vo sesija
-// 10. Probaj da add vistinsko repo na proekt
-// 11. Da moze da follownes repos
+// *10. Probaj da add vistinsko repo na proekt
 // 12. Za pageot myRepos - metod sto gi lista site repos od tvojot git acc
-// 13. Za pageot myFollowingRepos - metod sto gi lista site following repos na toj acc
-
 // 14. Create gitRepo - preku git acc da moze da napravi repo
+// 15. Trgni site FIXME: koi se radi postman staveni na nekoj user
+// 16. Odkomentiraj middleware za auth vo ruteri
 
 
 // Next: Mongo
@@ -114,7 +113,10 @@ app.listen(port, () => {
 // Next: React frontend with best practices
 
 
+// TODO:
 // da moze upload na slika/dokument nekakov
 // da moze da bira avatar od api (random da dava)
+// da moze da follownes repos
+// da moze da se stava numCommits informacijata vo gitRepo
 
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // const Project = require('./project');
-const GitRepo = require('./gitRepo');
+// const GitRepo = require('./gitRepo');
 
 const { Schema } = mongoose;
 
@@ -13,8 +13,8 @@ const UserSchema = new Schema({
     gitUrl: { type: String, required: true },
     gitAvatarUrl: { type: String, required: true },
     projectIds: { type: [String], default: [] },
-    followingGitRepos: { type: [GitRepo.schema], default: [] }
-
+    // followingGitRepos: { type: [GitRepo.schema], default: [] }
+    followingGitRepos: { type: [String], default: [] }          // niza od stringovi - urls od gitApi za get povici za dobivanje info za repos
 });
 
 
