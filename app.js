@@ -102,10 +102,12 @@ app.listen(port, () => {
 // *9.2 Kreiranje proekt preku user
 // *9.3 Zacuvuvanje na userot i tokenot nekako vo sesija
 // *10. Probaj da add vistinsko repo na proekt
-// 12. Za pageot myRepos - metod sto gi lista site repos od tvojot git acc
-// 14. Create gitRepo - preku git acc da moze da napravi repo
+// *12. Za pageot myRepos - metod sto gi lista site repos od tvojot git acc - so token
+// *14. Create gitRepo - preku git acc da moze da napravi repo - so token
+
+// - auth logout - trga token
 // 15. Trgni site FIXME: koi se radi postman staveni na nekoj user
-// 16. Odkomentiraj middleware za auth vo ruteri
+// 16. Odkomentiraj middleware za auth vo ruteri i dodaj vo ruteri kaj sto fali
 
 
 // Next: Mongo
@@ -116,7 +118,8 @@ app.listen(port, () => {
 // TODO:
 // da moze upload na slika/dokument nekakov
 // da moze da bira avatar od api (random da dava)
-// da moze da follownes repos
+// da moze da follownes repos - gi stava vo my following repos
 // da moze da se stava numCommits informacijata vo gitRepo
+// da dodavanje novi users na proekti i trganje (ke bidat colleagues)
 
 

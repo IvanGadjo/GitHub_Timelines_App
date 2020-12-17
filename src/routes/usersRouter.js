@@ -7,11 +7,12 @@ const usersRouter = express.Router();
 
 function router() {
 
-    const { getUserById, getProjectsOfLoggedInUser } = usersController();
+    const { getUserById, getProjectsOfLoggedInUser, getGitReposOfLoggedInUser } = usersController();
 
 
     usersRouter.route('/:id').get(getUserById);
     usersRouter.route('/my/projects').get(getProjectsOfLoggedInUser);
+    usersRouter.route('/my/gitRepos').get(getGitReposOfLoggedInUser);
 
 
     return usersRouter;

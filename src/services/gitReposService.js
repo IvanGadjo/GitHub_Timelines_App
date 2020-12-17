@@ -7,7 +7,9 @@ function gitReposService() {
 
     const resultsPerPage = 10;
 
-            // NOTE: Pages na github apito se 1 based, ne 0 based
+    // NOTE: Pages na github apito se 1 based, ne 0 based
+
+    // token not required
     function searchGitRepos(term, numPage) {
 
         return new Promise((resolve) => {
@@ -104,12 +106,68 @@ function gitReposService() {
         });
     }
 
+    // token required
+    // NOTE: Raboti i vaka, ne mora so promises kako gornite metodi, tuku so async/await
+    const getGitReposOfLoggedInUser = async (req) => {
+        let response = null;
+        await axios.get('https://api.github.com/user/repos', {
+            headers: {
+                authorization: `token ${req.session.userToken}`,
+                accept: 'application/vnd.github.v3+json'
+            }
+        }).then(resp => {
+            // return resp.data;
+            response = resp.data;
+        }).catch(err => {
+            debug(err);
+            response = 'Cannot get the repos of the logged in user';
+        });
+
+        return response;
+    };
+
+    const createGitRepo = async (req) => {
+
+        // const { name, description, homepage, isPrivate } = req.body;
+
+        const name = 'NovoRepo';
+        const description = 'NovoRepo_Desc';
+        const homepage = 'NovoRepo_HP';
+        const isPrivate = false;
+
+        let response = null;
+
+        await axios.post('https://api.github.com/user/repos', {
+             name: 'novoRepo',
+            //  description,
+            //  homepage,
+            //  private: isPrivate
+        }, 
+        {
+            headers: {
+                authorization: `token ${req.session.userToken}`,
+                accept: 'application/vnd.github.v3+json'
+            }
+        }).then(resp => {
+            response = resp.data;
+            debug(response);
+        }).catch(err => {
+            debug(err);
+            response = 'Cannot create the repo';
+        });
+
+        return response;
+    };
+
+
     return {
         searchGitRepos,
         getConcreteGitRepo,
         searchGitUsers,
         getUserRepos,
-        getCommitsFromRepo
+        getCommitsFromRepo,
+        getGitReposOfLoggedInUser,
+        createGitRepo
     };
 }
 

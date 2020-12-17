@@ -1,6 +1,6 @@
 const debug = require('debug')('app:usersController');
 const mongooseConnection = require('../repository/mongoose');
-
+const gitReposService = require('../services/gitReposService');
 
 function usersController() {
 
@@ -29,7 +29,18 @@ function usersController() {
         }());
     }
 
-    return { createNewUser, getUserById, getProjectsOfLoggedInUser };
+    function getGitReposOfLoggedInUser(req, resp) {
+        (async function getGitReposOfUserFromService() {
+            const result = await gitReposService.getGitReposOfLoggedInUser(req);
+            // debug(result);
+            resp.json(result);
+        }());
+    }
+
+    return { createNewUser, 
+             getUserById, 
+             getProjectsOfLoggedInUser,
+             getGitReposOfLoggedInUser };
 }
 
 module.exports = usersController;

@@ -19,7 +19,8 @@ function router() {
         getUserRepos,
         getCommitsFromRepo,
         addNoteToRepo,
-        removeNoteFromRepo
+        removeNoteFromRepo,
+        createNewRepo
     } = gitReposController(gitReposService);
 
     // Authentication middleware
@@ -43,7 +44,9 @@ function router() {
     gitReposRouter.route('/search/repos/:username/:gitRepoName/commits').get(getCommitsFromRepo);
     gitReposRouter.route('/search/repos/:username/:gitRepoName').get(getConcreteGitRepo);
     gitReposRouter.route('/search/users/:term').get(searchGitUsers);
-    
+
+    // gitReposRouter.route('/createNewRepo').post(createNewRepo);
+    gitReposRouter.route('/createNewRepo').get(createNewRepo);    
 
 
     return gitReposRouter;

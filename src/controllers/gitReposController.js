@@ -54,6 +54,13 @@ function gitReposController(gitReposService) {
         }());
     }
 
+    function createNewRepo(req, resp) {
+        (async function createNewRepoOnGit() {
+            const result = await gitReposService.createGitRepo(req);
+            resp.json(result);
+        }());
+    }
+
 
     // Only from model
 
@@ -96,7 +103,8 @@ function gitReposController(gitReposService) {
         addGitRepoToProjectSegment, 
         removeRepoFromSegmet,
         addNoteToRepo,
-        removeNoteFromRepo
+        removeNoteFromRepo,
+        createNewRepo
     };
 }
 
