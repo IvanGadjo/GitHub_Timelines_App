@@ -24,12 +24,12 @@ function router() {
     } = gitReposController(gitReposService);
 
     // Authentication middleware
-    // gitReposRouter.use((req, resp, next) => {
-    //     if (req.session.userToken)
-    //         next();
-    //     else
-    //         resp.redirect('/');
-    // });
+    gitReposRouter.use((req, resp, next) => {
+        if (req.session.userToken)
+            next();
+        else
+            resp.redirect('/');
+    });
 
     // Only from model
     gitReposRouter.route('/addRepoToProjectSegment/:id').post(addGitRepoToProjectSegment);
