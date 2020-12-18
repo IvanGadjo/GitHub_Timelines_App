@@ -29,8 +29,8 @@ mongoose.connect('mongodb://localhost:27017/Github_Timelines_App_2_DB').then(() 
 // ***
 const createNewProject = async (req) => {  
     
-    // const creator = req.session.userName;
-    const creator = 'NekojCovek';               // FIXME: radi postman
+    const creator = req.session.userName;
+    // const creator = 'NekojCovek';               
     
     const newProject = new Project({
         name: req.body.name,
@@ -100,10 +100,10 @@ const getProjectById = async (req) => {
     }
 };
 // ***
-const getProjectsOfLoggedInUser = async () => {
+const getProjectsOfLoggedInUser = async (req) => {
     
-    // const username = req.session.userName;       // FIXME: Radi postman vaka
-    const username = 'NekojCovek';
+    const username = req.session.userName;       
+    // const username = 'NekojCovek';
 
     const allProjs = await Project.find().exec();
 
@@ -117,8 +117,8 @@ const getProjectsOfLoggedInUser = async () => {
 const deleteProject = async (req) => {         // Userot moze da napravi delete samo na proekt na koj toj e kreator
     const { id } = req.params;
 
-    // const username = req.session.userName;       // FIXME: Radi postman vaka
-    const username = 'NekojCovek';
+    const username = req.session.userName;       
+    // const username = 'NekojCovek';
     const theUser = await User.findOne({ gitUsername: username });
 
 

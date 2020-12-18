@@ -128,20 +128,14 @@ function gitReposService() {
 
     const createGitRepo = async (req) => {
 
-        // const { name, description, homepage, isPrivate } = req.body;
-
-        const name = 'NovoRepo';
-        const description = 'NovoRepo_Desc';
-        const homepage = 'NovoRepo_HP';
-        const isPrivate = false;
+        const { name, description, isPrivate } = req.body;
 
         let response = null;
 
         await axios.post('https://api.github.com/user/repos', {
-             name: 'novoRepo',
-            //  description,
-            //  homepage,
-            //  private: isPrivate
+             name,
+             description,
+             private: isPrivate
         }, 
         {
             headers: {

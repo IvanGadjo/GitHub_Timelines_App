@@ -104,8 +104,7 @@ app.listen(port, () => {
 // *10. Probaj da add vistinsko repo na proekt
 // *12. Za pageot myRepos - metod sto gi lista site repos od tvojot git acc - so token
 // *14. Create gitRepo - preku git acc da moze da napravi repo - so token
-
-// - auth logout - trga token
+// *- auth logout - trga token
 // 15. Trgni site FIXME: koi se radi postman staveni na nekoj user
 // 16. Odkomentiraj middleware za auth vo ruteri i dodaj vo ruteri kaj sto fali
 

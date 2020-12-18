@@ -77,6 +77,7 @@ function router() {
                     req.session.userName = gitUsername;
                     
                     // povik na metod od userscontroler za new user
+                    // eslint-disable-next-line no-unused-vars
                     const noviot = createNewUser(gitUsername, gitUrl, gitAvatarUrl, projectIds, followingGitRepos);
 
                     res.redirect('/projects');
@@ -87,6 +88,11 @@ function router() {
             });
     });
 
+    // logout
+    authRouter.route('/logout').get((req, resp) => {
+        req.session.destroy();
+        resp.redirect('/');     // redirect na home page
+    });
 
     // FIXME: zatvori go ovoj endpoint na kraj
     authRouter.route('/getUserToken').get((req, resp) => {

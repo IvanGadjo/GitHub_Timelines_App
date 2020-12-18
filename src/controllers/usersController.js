@@ -24,7 +24,7 @@ function usersController() {
 
     function getProjectsOfLoggedInUser(req, resp) {
         (async function getProjsOfUserFromMongo() {
-            const result = await mongooseConnection.getProjectsOfLoggedInUser();
+            const result = await mongooseConnection.getProjectsOfLoggedInUser(req);
             resp.json(result);
         }());
     }
