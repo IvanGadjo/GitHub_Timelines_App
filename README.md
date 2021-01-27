@@ -11,6 +11,6 @@ a new github repository through this app.
 Technologies
 ----
 This is the backend for the Github timelines web app. Built with NodeJS + ExpressJS.
-Authentication: Using oAuth with github user accounts for login.
-Database: MongoDB.
-Api: Github's api for user and repo searching and creating new repositories.
+- Authentication: Using oAuth with github user accounts for login.
+- Database: MongoDB.
+- Api: Github's api for user and repo searching and creating new repositories.
