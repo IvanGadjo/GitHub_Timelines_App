@@ -13,6 +13,10 @@ const clientSecret = process.env.CLIENT_SECRET;
 
 
 
+// NOTE: Full oAuth flow for authentication with GitHub
+
+
+
 function router() {    
 
     const { createNewUser } = usersController();
@@ -20,6 +24,8 @@ function router() {
 
 
     let token = null;
+
+    
 
     // login
     authRouter.route('/').get((req, resp) => {      // NOTE: prv povik za da zeme code
