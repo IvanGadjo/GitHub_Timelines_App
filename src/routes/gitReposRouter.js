@@ -23,6 +23,9 @@ function router() {
         createNewRepo
     } = gitReposController(gitReposService);
 
+
+    // TODO: Bidejki e istata fukncija vo sekoj ruter, mozes da ja izvadis vo nov file za middleware,
+    // pa import na istata, i ja davas kako param na ova myRouter.use()
     // Authentication middleware
     gitReposRouter.use((req, resp, next) => {
         if (req.session.userToken)

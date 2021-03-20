@@ -44,6 +44,7 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist
 app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 
 // -- Session Management
+// TODO: Ova moze da bide vo poseben fajl napraveno
 mongoose.connect('mongodb://localhost:27017/Github_Timelines_App_2_DB').then(() => {
     debug('Mogoose connection succesfull from APP.js'); 
 }).catch(() => {
